@@ -1,0 +1,234 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input AuthChangePasswordInput {
+  currentPassword: String!
+  newPassword: String!
+}
+
+input AuthGenerateRecoveryCodeInput {
+  email: String!
+}
+
+input AuthRecoverPasswordInput {
+  code: String!
+  email: String!
+  password: String!
+}
+
+input AuthSignInInput {
+  email: String!
+  password: String!
+}
+
+type AuthSignInResponse {
+  accessToken: String!
+  userId: String!
+}
+
+input AuthSignUpInput {
+  email: String!
+  fullName: String!
+  nickname: String!
+  password: String!
+}
+
+type Coordinate {
+  latitude: Float!
+  longitude: Float!
+}
+
+input CoordinateCreateInput {
+  latitude: Float!
+  longitude: Float!
+}
+
+"""
+A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar Date
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
+
+enum ErrorCode {
+  AUTH_ERROR
+  FEATURE_TOGGLE_ERROR
+  FORBIDDEN_ERROR
+  NOT_FOUND_ERROR
+  UNKNOWN_ERROR
+  VALIDATION_ERROR
+}
+
+enum ErrorDescription {
+  EMAIL_NOT_AVAILABLE
+  EMAIL_NOT_FOUND
+  PARTY_NAME_NOT_AVAILABLE
+  PASSWORD_INVALID
+  SIGN_IN_INVALID
+  USER_NAME_NOT_AVAILABLE
+}
+
+type FeatureToggle {
+  _id: String!
+  name: FeatureToggleName!
+  value: Boolean!
+}
+
+input FeatureToggleChangeValueInput {
+  name: FeatureToggleName!
+  value: Boolean!
+}
+
+enum FeatureToggleName {
+  MAILING
+  PARTY_CREATE
+  PARTY_GET
+  SIGN_UP
+  USER_GET
+}
+
+input FeatureTogglePopulateInput {
+  value: Boolean
+}
+
+type Mutation {
+  adminSignIn(data: AuthSignInInput!): AuthSignInResponse!
+  changePassword(data: AuthChangePasswordInput!): Boolean!
+  featureToggleChangeValue(data: FeatureToggleChangeValueInput!): Boolean!
+  featureToggleSync(data: FeatureTogglePopulateInput!): Boolean!
+  generateRecoveryCode(data: AuthGenerateRecoveryCodeInput!): Boolean!
+  infeChangeMinVersion(version: String!): Boolean!
+  infeInitialize: Boolean!
+  partyCreate(data: PartyCreateInput!): String!
+  recoverPassword(data: AuthRecoverPasswordInput!): Boolean!
+  signIn(data: AuthSignInInput!): AuthSignInResponse!
+  signUp(data: AuthSignUpInput!): AuthSignInResponse!
+  supportSendMessage(data: SupportSendMessageInput!): Boolean!
+}
+
+type Party {
+  _id: String!
+  address: String!
+  attenders: [User!]!
+  attendersCount: Float!
+  availability: PartyAvailability!
+  coordinate: Coordinate!
+  createdAt: DateTime!
+  date: Date!
+  description: String!
+  name: String!
+  organizer: User
+  slug: String!
+  status: PartyStatus!
+  updatedAt: DateTime
+}
+
+enum PartyAvailability {
+  FOLLOWERS
+  FOLLOWING
+  PRIVATE
+  PUBLIC
+}
+
+input PartyCreateInput {
+  address: String!
+  allowInvites: Boolean!
+  availability: PartyAvailability!
+  coordinate: CoordinateCreateInput!
+  date: Date!
+  description: String!
+  name: String!
+  openBar: Boolean!
+}
+
+input PartyGetInput {
+  id: String
+  slug: String
+}
+
+type PartyGetResponse {
+  _id: String!
+  address: String!
+  attenders: [User!]!
+  attendersCount: Float!
+  availability: PartyAvailability!
+  date: Date!
+  description: String!
+  isAttender: Boolean!
+  isOrganizer: Boolean!
+  name: String!
+  organizer: User
+  slug: String!
+  status: PartyStatus!
+}
+
+enum PartyStatus {
+  CREATED
+  ENABLED
+  EXPIRED
+}
+
+type Query {
+  featureToggleGetEnabledNames: [FeatureToggleName!]!
+  featureToggleList: [FeatureToggle!]!
+  infeMeetMinVersion(version: String!): Boolean!
+  partyGet(data: PartyGetInput!): PartyGetResponse!
+  typesSync: TypesSyncResponse!
+  userGet(data: UserGetInput!): UserGetResponse!
+  userSearch(q: String): [UserPreviewResponse!]!
+}
+
+input SupportSendMessageInput {
+  body: String!
+  subject: String!
+}
+
+type TypesSyncResponse {
+  code: ErrorCode!
+  description: ErrorDescription!
+}
+
+type User {
+  _id: String!
+  attendedParties: [Party!]!
+  createdAt: DateTime!
+  email: String!
+  followers: [User!]!
+  following: [User!]!
+  fullName: String!
+  isOpera: Boolean
+  nickname: String!
+  password: String
+  pictureId: String
+  recoveryCode: String
+  refreshToken: String
+  updatedAt: DateTime
+}
+
+input UserGetInput {
+  id: String
+  nickname: String
+}
+
+type UserGetResponse {
+  _id: String!
+  attendedPartiesCount: Float!
+  followersCount: Float!
+  followingCount: Float!
+  fullName: String!
+  isFollower: Boolean!
+  isFollowing: Boolean!
+  nickname: String!
+  pictureId: String
+}
+
+type UserPreviewResponse {
+  _id: String!
+  fullName: String
+  nickname: String!
+  pictureId: String
+}

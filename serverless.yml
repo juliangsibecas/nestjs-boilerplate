@@ -1,0 +1,17 @@
+service: s3
+provider:
+  name: aws
+  runtime: nodejs12.x
+plugins:
+  - serverless-s3-local
+  - serverless-offline
+custom:
+  s3:
+    address: 127.0.0.1
+    directory: /tmp
+resources:
+  Resources:
+    UserBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: NAME-assets 

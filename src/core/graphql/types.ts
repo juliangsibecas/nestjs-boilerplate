@@ -1,0 +1,27 @@
+export enum ErrorCode {
+  AUTH_ERROR = 'AUTH_ERROR',
+  VALIDATION_ERROR = 'VALIDATION_ERROR',
+  NOT_FOUND_ERROR = 'NOT_FOUND_ERROR',
+  FORBIDDEN_ERROR = 'FORBIDEN_ERROR',
+  FEATURE_TOGGLE_ERROR = 'FEATURE_TOGGLE_ERROR',
+  UNKNOWN_ERROR = 'UNKNOWN_ERROR',
+}
+
+export enum ErrorDescription {
+  SIGN_IN_INVALID = 'SIGN_IN_INVALID',
+  PASSWORD_INVALID = 'PASSWORD_INVALID',
+  EMAIL_NOT_FOUND = 'EMAIL_NOT_FOUND',
+  PARTY_NAME_NOT_AVAILABLE = 'PARTY_NAME_NOT_AVAILABLE',
+  USER_NAME_NOT_AVAILABLE = 'USER_NAME_NOT_AVAILABLE',
+  EMAIL_NOT_AVAILABLE = 'EMAIL_NOT_AVAILABLE',
+}
+
+export interface Operation {
+  variables: any;
+  query: string;
+}
+
+export interface Response<T> {
+  data?: T;
+  errors?: Array<{ message: ErrorCode }>;
+}
